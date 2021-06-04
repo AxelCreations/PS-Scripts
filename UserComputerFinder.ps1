@@ -1,4 +1,4 @@
-# Get where a user is Logged In
+# Get where a user is Logged On
 ##-----------------------------------
 
 # Specify the user that you are looking fo
