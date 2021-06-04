@@ -44,31 +44,6 @@ foreach($DC in (Get-ADDomainController -Filter *))
         Select-Object LockedOut, BadLogonCount, LastBadPasswordAttempt, PasswordLastSet, AccountExpirationDate, LastLogonDate, comment
 }
 
-#Este Script es sumamente lento. Escanea cada equipo de la red y verifica en cual equipo está logueado el usuario "user.name"
-$theUser = "user.name"
-$PCs = Get-ADComputer -Filter * | Select-Object Name
-$total = ($PCs.Count)
-$conteo = 0
-ForEach($PC in $PCs)
-{
-    Clear-Host
-    $conteo = $conteo + 1
-    
-    Write-Progress -Activity "Navigating" -Status "Remaining $conteo" -percentComplete ($conteo / $total * 100)
-
-    if ( (Test-Connection -ComputerName $PC.Name -Count 1 -Quiet) -eq $true )
-    {
-        if ( (Get-ADUser ((Get-WmiObject –ComputerName $PC.Name –Class Win32_ComputerSystem -Property * |
-            Select-Object -ExpandProperty UserName).Split("\")[1]) -Properties * |
-            Select SamAccountName | Format-Table -HideTableHeaders | Out-String).Trim() -eq $theUser )
-        {
-            Write-Host $PC.Name
-            break
-        }
-    }
-}
-#--
-
 #Exportar archivo .csv con todos los usuarios que contengan "Criterio Búsqueda" en el campo Description de AD
 Get-ADUser -Filter { Description -Like "*Criterio Descripción*" } -Properties * | Select-Object Name, Description, Title | Export-Csv "C:\carpeta\archivo.csv"
 
