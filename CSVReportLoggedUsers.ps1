@@ -44,7 +44,7 @@ $Report = ForEach($PC in $PCs)
     $Obj | Add-Member -Name Conexión -MemberType NoteProperty -Value $Connection
     $Obj | Add-Member -Name Código -MemberType NoteProperty -Value $User.SamAccountName
     $Obj | Add-Member -Name Nombre -MemberType NoteProperty -Value $User.DisplayName
-    $Obj | Add-Member -Name Departamento -MemberType NoteProperty -Value $User.Description
+    $Obj | Add-Member -Name Description -MemberType NoteProperty -Value $User.Description
     $Obj
 
     $IP = [string]::Empty
